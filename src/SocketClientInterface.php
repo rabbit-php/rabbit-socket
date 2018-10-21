@@ -15,11 +15,6 @@ namespace rabbit\socket;
 interface SocketClientInterface
 {
     /**
-     *
-     */
-    public function reconnect(): void;
-
-    /**
      * @param string $data
      */
     public function send(string $data): bool;
