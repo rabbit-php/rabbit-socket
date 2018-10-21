@@ -11,8 +11,15 @@ namespace rabbit\socket;
 
 use rabbit\pool\AbstractConnection;
 
+/**
+ * Class AbstracetSocketConnection
+ * @package rabbit\socket
+ */
 abstract class AbstracetSocketConnection extends AbstractConnection implements SocketClientInterface
 {
+    /**
+     * @return bool
+     */
     public function close(): bool
     {
         return true;
