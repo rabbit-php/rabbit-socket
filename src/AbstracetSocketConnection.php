@@ -18,6 +18,11 @@ use rabbit\pool\AbstractConnection;
 abstract class AbstracetSocketConnection extends AbstractConnection implements SocketClientInterface
 {
     /**
+     * @var \Swoole\Coroutine\Client
+     */
+    protected $connection;
+
+    /**
      * @return bool
      */
     public function close(): bool
