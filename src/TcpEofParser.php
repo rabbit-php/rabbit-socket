@@ -10,13 +10,14 @@ namespace rabbit\socket;
 
 
 use rabbit\core\ObjectFactory;
+use rabbit\helper\JsonHelper;
 use rabbit\parser\ParserInterface;
 
 /**
  * Class TcpEofParser
  * @package rabbit\socket
  */
-class TcpEofParser implements ParserInterface
+class TcpEofParser implements TcpParserInterface
 {
     /**
      * @var string
@@ -42,9 +43,9 @@ class TcpEofParser implements ParserInterface
      * @param mixed $data
      * @return string
      */
-    public function encode($data): string
+    public function encode(array $data): string
     {
-        $data = $this->parser->encode($data);
+        $data = $this->parser->encode(JsonHelper::encode($data, JSON_UNESCAPED_UNICODE));
         return $data . $this->eofCheck;
     }
 
@@ -54,7 +55,8 @@ class TcpEofParser implements ParserInterface
      */
     public function decode(string $data)
     {
-        $data = rtrim($data, $this->eofCheck);
-        return $this->parser->decode($data);
+        $data = $this->parser->decode(rtrim($data, $this->eofCheck));
+        $data = JsonHelper::decode($data, true);
+        return $data;
     }
 }

@@ -10,13 +10,14 @@ namespace rabbit\socket;
 
 
 use rabbit\core\ObjectFactory;
+use rabbit\helper\JsonHelper;
 use rabbit\parser\ParserInterface;
 
 /**
  * Class TcpLenParser
  * @package rabbit\socket
  */
-class TcpLenParser implements ParserInterface
+class TcpLenParser implements TcpParserInterface
 {
     /**
      * @var int
@@ -55,9 +56,9 @@ class TcpLenParser implements ParserInterface
      * @param mixed $data
      * @return string
      */
-    public function encode($data): string
+    public function encode(array $data): string
     {
-        $data = $this->parser->encode($data);
+        $data = $this->parser->encode(JsonHelper::encode($data, JSON_UNESCAPED_UNICODE));
         $total_length = $this->headLen + strlen($data) - $this->packageOffset;
         return pack($this->packageType, $total_length) . $data;
     }
@@ -69,6 +70,7 @@ class TcpLenParser implements ParserInterface
     public function decode(string $data)
     {
         $data = substr($data, $this->headLen);
-        return $this->parser->decode($data);
+        $data = $this->parser->decode(JsonHelper::decode($data, true))['data'];
+        return $data;
     }
 }
