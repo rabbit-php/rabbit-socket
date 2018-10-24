@@ -71,7 +71,7 @@ class TcpClient extends AbstracetSocketConnection
      */
     protected function getTcpClientSetting(): array
     {
-        return ObjectFactory::get('tcpclient.setting', []);
+        return ObjectFactory::get('tcpclient.setting', false, []);
     }
 
     /**
