@@ -58,9 +58,9 @@ class TcpClient extends AbstracetSocketConnection
      * @return mixed|string
      * @throws Exception
      */
-    public function receive()
+    public function receive(float $timeout = null)
     {
-        $result = $this->recv();
+        $result = $this->recv($timeout);
         $this->recv = true;
         return $result;
     }
@@ -89,9 +89,14 @@ class TcpClient extends AbstracetSocketConnection
      * @return string
      * @throws Exception
      */
-    public function recv(): string
+    public function recv(float $timeout = null): string
     {
-        $data = $this->connection->recv();
+        if($timeout!==null){
+            $data = $this->connection->recv($timeout);
+        }else{
+            $data = $this->connection->recv();
+        }
+
         if (empty($data)) {
             throw new Exception('ServiceConnection::recv error, errno=' . socket_strerror($this->connection->errCode));
         }

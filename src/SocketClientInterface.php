@@ -22,7 +22,7 @@ interface SocketClientInterface
     /**
      * @return string
      */
-    public function recv(): string;
+    public function recv(float $timeout = null): string;
 
     /**
      *
