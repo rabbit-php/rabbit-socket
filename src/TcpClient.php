@@ -55,6 +55,7 @@ class TcpClient extends AbstracetSocketConnection
     }
 
     /**
+     * @param float|null $timeout
      * @return mixed|string
      * @throws Exception
      */
