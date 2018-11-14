@@ -9,7 +9,6 @@
 namespace rabbit\socket;
 
 use rabbit\core\Exception;
-use rabbit\core\ObjectFactory;
 use Swoole\Coroutine\Client;
 
 /**
@@ -27,12 +26,12 @@ class TcpClient extends AbstracetSocketConnection
 
         $address = $this->pool->getConnectionAddress();
         $timeout = $this->pool->getTimeout();
-        $setting = $this->getTcpClientSetting();
+        $setting = $this->pool->getPoolConfig()->getSetting();
         $setting && $client->set($setting);
 
         list($host, $port) = explode(':', $address);
         if (!$client->connect($host, $port, $timeout)) {
-            $error = sprintf('Service connect fail errorCode=%s host=%s port=%s', $client->errCode, $host, $port);
+            $error = sprintf('Service connect fail error=%s host=%s port=%s', socket_strerror($client->errCode), $host, $port);
             throw new Exception($error);
         }
         $this->connection = $client;
@@ -67,15 +66,6 @@ class TcpClient extends AbstracetSocketConnection
     }
 
     /**
-     * @return array
-     * @throws \Exception
-     */
-    protected function getTcpClientSetting(): array
-    {
-        return ObjectFactory::get('tcpclient.setting', false, []);
-    }
-
-    /**
      * @param string $data
      * @return bool
      */
@@ -92,9 +82,9 @@ class TcpClient extends AbstracetSocketConnection
      */
     public function recv(float $timeout = null): string
     {
-        if($timeout!==null){
+        if ($timeout !== null) {
             $data = $this->connection->recv($timeout);
-        }else{
+        } else {
             $data = $this->connection->recv();
         }
 

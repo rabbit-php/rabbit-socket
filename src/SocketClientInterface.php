@@ -24,6 +24,8 @@ interface SocketClientInterface
      */
     public function recv(float $timeout = null): string;
 
+    public function peek(int $length = 65535): ?string;
+
     /**
      *
      */

@@ -29,4 +29,22 @@ abstract class AbstracetSocketConnection extends AbstractConnection implements S
     {
         return true;
     }
+
+    /**
+     * @param int $length
+     * @return string
+     */
+    public function peek(int $length = 65535): ?string
+    {
+        $result = $this->connection->peek($length);
+        return $result ?? null;
+    }
+
+    /**
+     * @return \Swoole\Coroutine\Client
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
 }
