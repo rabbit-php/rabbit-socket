@@ -10,7 +10,6 @@ namespace rabbit\socket;
 
 use rabbit\App;
 use rabbit\core\Exception;
-use rabbit\nsq\wire\Writer;
 use rabbit\pool\PoolProperties;
 use rabbit\socket\pool\SocketConfig;
 use Swoole\Client;
