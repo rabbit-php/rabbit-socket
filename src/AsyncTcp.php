@@ -92,7 +92,7 @@ class AsyncTcp
             });
 
             $connection->on('error', function (\Swoole\Client $cli) use ($key) {
-                App::error('Connect fail:' . socket_strerror($client->errCode), $this->module);
+                App::error('Connect fail:' . socket_strerror($cli->errCode), $this->module);
                 $this->reconnect($key);
                 isset($this->on['error']) && call_user_func($this->on['error'], $cli);
             });
@@ -136,10 +136,10 @@ class AsyncTcp
     {
         $this->reconnectCount++;
         if ($this->reconnectTimes == 0 || $this->reconnectCount <= $this->reconnectTimes) {
-            unset($this->connections[$key]);
             swoole_timer_after($this->reconnectTicket, [$this, 'createConnection'], $key);
         } else {
             $this->disconnect($this->connections[$key]);
         }
+        unset($this->connections[$key]);
     }
 }
