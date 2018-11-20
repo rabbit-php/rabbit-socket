@@ -2,27 +2,28 @@
 /**
  * Created by PhpStorm.
  * User: Administrator
- * Date: 2018/11/20
- * Time: 13:55
+ * Date: 2018/11/14
+ * Time: 11:19
  */
 
 namespace rabbit\socket\pool;
 
 
+use rabbit\pool\ConnectionInterface;
 use rabbit\pool\ConnectionPool;
-use rabbit\socket\SocketClient;
+use rabbit\socket\TcpClient;
 
 /**
  * Class SocketPool
  * @package rabbit\socket\pool
  */
-class SocketPool extends ConnectionPool
+class TcpPool extends ConnectionPool
 {
     /**
      * @return ConnectionInterface
      */
     public function createConnection(): ConnectionInterface
     {
-        return new SocketClient($this);
+        return new TcpClient($this);
     }
 }

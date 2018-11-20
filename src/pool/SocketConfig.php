@@ -2,39 +2,58 @@
 /**
  * Created by PhpStorm.
  * User: Administrator
- * Date: 2018/11/14
- * Time: 10:24
+ * Date: 2018/11/20
+ * Time: 13:40
  */
 
 namespace rabbit\socket\pool;
 
-
 use rabbit\pool\PoolProperties;
 
 /**
- * Class SocketPool
+ * Class SocketConfig
  * @package rabbit\socket\pool
  */
 class SocketConfig extends PoolProperties
 {
-    /**
-     * @var array
-     */
-    protected $setting = [];
+    /** @var int */
+    private $domain = AF_INET;
+    /** @var int */
+    private $type = SOCK_STREAM;
+    /** @var int */
+    private $protocol = 0;
+    /** @var string */
+    private $bind = null;
 
     /**
-     * @return array
+     * @return int
      */
-    public function getSetting(): array
+    public function getDomin(): int
     {
-        return $this->setting;
+        return $this->domain;
     }
 
     /**
-     * @param array $setting
+     * @return int
      */
-    public function setSetting(array $setting): void
+    public function getType(): int
     {
-        $this->setting = $setting;
+        return $this->type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProtocol(): int
+    {
+        return $this->protocol;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBind(): string
+    {
+        return $this->bind;
     }
 }

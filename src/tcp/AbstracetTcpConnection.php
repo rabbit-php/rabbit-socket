@@ -6,30 +6,16 @@
  * Time: 1:03
  */
 
-namespace rabbit\socket;
+namespace rabbit\socket\tcp;
 
-
-use rabbit\pool\AbstractConnection;
+use rabbit\socket\AbstractConnection;
 
 /**
  * Class AbstracetSocketConnection
  * @package rabbit\socket
  */
-abstract class AbstracetSocketConnection extends AbstractConnection implements SocketClientInterface
+abstract class AbstracetTcpConnection extends AbstractConnection implements TcpClientInterface
 {
-    /**
-     * @var \Swoole\Coroutine\Client
-     */
-    protected $connection;
-
-    /**
-     * @return bool
-     */
-    public function close(): bool
-    {
-        return true;
-    }
-
     /**
      * @param int $length
      * @return string

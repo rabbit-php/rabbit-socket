@@ -2,17 +2,17 @@
 /**
  * Created by PhpStorm.
  * User: Administrator
- * Date: 2018/10/21
- * Time: 0:58
+ * Date: 2018/11/20
+ * Time: 12:04
  */
 
 namespace rabbit\socket;
 
 /**
- * Interface SocketClientInterface
+ * Interface ClientInterface
  * @package rabbit\socket
  */
-interface SocketClientInterface
+interface ClientInterface
 {
     /**
      * @param string $data
@@ -24,10 +24,8 @@ interface SocketClientInterface
      */
     public function recv(float $timeout = null): string;
 
-    public function peek(int $length = 65535): ?string;
-
     /**
-     *
+     * @return bool
      */
     public function close(): bool;
 }

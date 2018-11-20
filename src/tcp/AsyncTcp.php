@@ -6,12 +6,11 @@
  * Time: 9:56
  */
 
-namespace rabbit\socket;
+namespace rabbit\socket\tcp;
 
 use rabbit\App;
 use rabbit\core\Exception;
 use rabbit\pool\PoolProperties;
-use rabbit\socket\pool\SocketConfig;
 use Swoole\Client;
 
 /**
