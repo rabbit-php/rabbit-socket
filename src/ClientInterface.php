@@ -22,7 +22,7 @@ interface ClientInterface
     /**
      * @return string
      */
-    public function recv(float $timeout = null): string;
+    public function recv(float $timeout = -1): string;
 
     /**
      * @return bool

@@ -39,7 +39,7 @@ abstract class AbstractConnection extends \rabbit\pool\AbstractConnection implem
      * @return mixed|string
      * @throws Exception
      */
-    public function receive(float $timeout = null)
+    public function receive(float $timeout = -1)
     {
         $result = $this->recv($timeout);
         $this->recv = true;
@@ -61,7 +61,7 @@ abstract class AbstractConnection extends \rabbit\pool\AbstractConnection implem
      * @return string
      * @throws Exception
      */
-    public function recv(float $timeout = null): string
+    public function recv(float $timeout = -1): string
     {
         if ($timeout !== null) {
             $data = $this->connection->recv($timeout);
