@@ -19,11 +19,14 @@ use rabbit\socket\TcpClient;
  */
 class TcpPool extends ConnectionPool
 {
+    private $client = TcpClient::class;
+
     /**
      * @return ConnectionInterface
      */
     public function createConnection(): ConnectionInterface
     {
-        return new TcpClient($this);
+        $client = $this->client;
+        return new $client($this);
     }
 }

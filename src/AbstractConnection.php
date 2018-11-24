@@ -63,11 +63,7 @@ abstract class AbstractConnection extends \rabbit\pool\AbstractConnection implem
      */
     public function recv(float $timeout = -1): string
     {
-        if ($timeout !== null) {
-            $data = $this->connection->recv($timeout);
-        } else {
-            $data = $this->connection->recv();
-        }
+        $data = $this->connection->recv($timeout);
 
         if (empty($data)) {
             throw new Exception('ServiceConnection::recv error, errno=' . socket_strerror($this->connection->errCode));
