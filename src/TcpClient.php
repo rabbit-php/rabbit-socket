@@ -9,14 +9,14 @@
 namespace rabbit\socket;
 
 use rabbit\core\Exception;
-use rabbit\socket\tcp\AbstracetTcpConnection;
+use rabbit\socket\tcp\AbstractTcpConnection;
 use Swoole\Coroutine\Client;
 
 /**
  * Class TcpClient
  * @package rabbit\socket
  */
-class TcpClient extends AbstracetTcpConnection
+class TcpClient extends AbstractTcpConnection
 {
     /**
      * @throws Exception

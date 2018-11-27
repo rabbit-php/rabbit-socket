@@ -14,7 +14,7 @@ use rabbit\socket\AbstractConnection;
  * Class AbstracetSocketConnection
  * @package rabbit\socket
  */
-abstract class AbstracetTcpConnection extends AbstractConnection implements TcpClientInterface
+abstract class AbstractTcpConnection extends AbstractConnection implements TcpClientInterface
 {
     /**
      * @param int $length
