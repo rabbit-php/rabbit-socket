@@ -8,6 +8,8 @@
 
 namespace rabbit\socket\socket;
 
+use rabbit\core\Exception;
+use rabbit\exception\NotSupportedException;
 use rabbit\socket\AbstractConnection;
 
 
@@ -17,6 +19,75 @@ use rabbit\socket\AbstractConnection;
  */
 abstract class AbstractSocketConnection extends AbstractConnection implements SocketClientInterface
 {
+    /**
+     * @param string $data
+     * @param float $timeout
+     * @return bool
+     * @throws NotSupportedException
+     */
+    public function send(string $data, float $timeout = -1): bool
+    {
+        $result = $this->connection->send($data);
+        $this->recv = false;
+        return $result;
+    }
+
+    /**
+     * @param string $data
+     * @param float $timeout
+     * @return bool
+     */
+    public function sendByTimeout(string $data, float $timeout = -1): int
+    {
+        $result = $this->connection->send($data, $timeout);
+        $this->recv = false;
+        return $result;
+    }
+
+    /**
+     * @param int $length
+     * @param float $timeout
+     * @return string
+     * @throws Exception
+     */
+    public function receiveByLength(int $length = 65535, float $timeout = -1): string
+    {
+        $result = $this->recvByLength($length, $timeout);
+        $this->recv = true;
+        return $result;
+    }
+
+    /**
+     * @param float $timeout
+     * @return string
+     * @throws Exception
+     */
+    public function recv(float $timeout = -1): string
+    {
+        $data = $this->connection->recv(65535, $timeout);
+
+        if (empty($data)) {
+            throw new Exception('ServiceConnection::recv error, errno=' . socket_strerror($this->connection->errCode));
+        }
+        return $data;
+    }
+
+    /**
+     * @param int $length
+     * @param float $timeout
+     * @return string
+     * @throws Exception
+     */
+    public function recvByLength(int $length = 65535, float $timeout = -1): string
+    {
+        $data = $this->connection->recv($length, $timeout);
+
+        if (empty($data)) {
+            throw new Exception('ServiceConnection::recv error, errno=' . socket_strerror($this->connection->errCode));
+        }
+        return $data;
+    }
+
     /**
      * @param string $address
      * @param int $port
@@ -88,5 +159,13 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
     public function getpeername(): array
     {
         return $this->connection->getpeername();
+    }
+
+    /**
+     * @return bool
+     */
+    public function check(): bool
+    {
+        return true;
     }
 }

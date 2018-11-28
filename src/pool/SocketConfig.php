@@ -52,7 +52,7 @@ class SocketConfig extends PoolProperties
     /**
      * @return string
      */
-    public function getBind(): string
+    public function getBind(): ?string
     {
         return $this->bind;
     }

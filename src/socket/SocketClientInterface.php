@@ -17,6 +17,26 @@ use rabbit\socket\ClientInterface;
 interface SocketClientInterface extends ClientInterface
 {
     /**
+     * @param float $timeout
+     * @return int
+     */
+    public function sendByTimeout(string $data, float $timeout = -1): int;
+
+    /**
+     * @param int $length
+     * @param float $timeout
+     * @return string
+     */
+    public function receiveByLength(int $length = 65535, float $timeout = -1): string;
+
+    /**
+     * @param int $length
+     * @param float $timeout
+     * @return string
+     */
+    public function recvByLength(int $length = 65535, float $timeout = -1): string;
+
+    /**
      * @param string $address
      * @param int $port
      * @return bool
@@ -33,7 +53,7 @@ interface SocketClientInterface extends ClientInterface
      * @param float $timeout
      * @return null|Coroutine\Socket
      */
-    public function accept(float $timeout = -1): ?Coroutine\Socket;
+    public function accept(float $timeout = -1): ?\Swoole\Coroutine\Socket;
 
     /**
      * @param string $address
@@ -58,5 +78,5 @@ interface SocketClientInterface extends ClientInterface
     /**
      * @return array
      */
-    public function getpeername():array ;
+    public function getpeername(): array;
 }
