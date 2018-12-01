@@ -20,21 +20,21 @@ interface SocketClientInterface extends ClientInterface
      * @param float $timeout
      * @return int
      */
-    public function sendByTimeout(string $data, float $timeout = -1): int;
+    public function sendWithTimeout(string $data, float $timeout = -1): int;
 
     /**
      * @param int $length
      * @param float $timeout
      * @return string
      */
-    public function receiveByLength(int $length = 65535, float $timeout = -1): string;
+    public function receiveWithLength(int $length = 65535, float $timeout = -1): string;
 
     /**
      * @param int $length
      * @param float $timeout
      * @return string
      */
-    public function recvByLength(int $length = 65535, float $timeout = -1): string;
+    public function recvWithLength(int $length = 65535, float $timeout = -1): string;
 
     /**
      * @param string $address

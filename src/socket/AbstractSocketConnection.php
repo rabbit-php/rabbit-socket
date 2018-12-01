@@ -37,7 +37,7 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
      * @param float $timeout
      * @return bool
      */
-    public function sendByTimeout(string $data, float $timeout = -1): int
+    public function sendWithTimeout(string $data, float $timeout = -1): int
     {
         $result = $this->connection->send($data, $timeout);
         $this->recv = false;
@@ -50,9 +50,9 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
      * @return string
      * @throws Exception
      */
-    public function receiveByLength(int $length = 65535, float $timeout = -1): string
+    public function receiveWithLength(int $length = 65535, float $timeout = -1): string
     {
-        $result = $this->recvByLength($length, $timeout);
+        $result = $this->recvWithLength($length, $timeout);
         $this->recv = true;
         return $result;
     }
@@ -78,7 +78,7 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
      * @return string
      * @throws Exception
      */
-    public function recvByLength(int $length = 65535, float $timeout = -1): string
+    public function recvWithLength(int $length = 65535, float $timeout = -1): string
     {
         $data = $this->connection->recv($length, $timeout);
 
