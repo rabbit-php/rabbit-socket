@@ -9,8 +9,7 @@
 namespace rabbit\socket\socket;
 
 use rabbit\core\Exception;
-use rabbit\exception\NotSupportedException;
-use rabbit\socket\AbstractConnection;
+use rabbit\pool\AbstractConnection;
 
 
 /**
@@ -19,57 +18,31 @@ use rabbit\socket\AbstractConnection;
  */
 abstract class AbstractSocketConnection extends AbstractConnection implements SocketClientInterface
 {
+    protected $connection;
     /**
      * @param string $data
      * @param float $timeout
-     * @return bool
-     * @throws NotSupportedException
+     * @return int
      */
-    public function send(string $data, float $timeout = -1): bool
+    public function send(string $data, float $timeout = -1): int
     {
-        $result = $this->connection->send($data);
-        $this->recv = false;
-        return $result;
-    }
-
-    /**
-     * @param string $data
-     * @param float $timeout
-     * @return bool
-     */
-    public function sendWithTimeout(string $data, float $timeout = -1): int
-    {
-        $result = $this->connection->send($data, $timeout);
-        $this->recv = false;
-        return $result;
-    }
-
-    /**
-     * @param int $length
-     * @param float $timeout
-     * @return string
-     * @throws Exception
-     */
-    public function receiveWithLength(int $length = 65535, float $timeout = -1): string
-    {
-        $result = $this->recvWithLength($length, $timeout);
-        $this->recv = true;
-        return $result;
-    }
-
-    /**
-     * @param float $timeout
-     * @return string
-     * @throws Exception
-     */
-    public function recv(float $timeout = -1): string
-    {
-        $data = $this->connection->recv(65535, $timeout);
-
-        if (empty($data)) {
-            throw new Exception('ServiceConnection::recv error, errno=' . socket_strerror($this->connection->errCode));
+        $total = 0;
+        while ($data && strlen($data) > 0) {
+            $result = $this->connection->send($data, $timeout);
+            $data = substr($data, $result);
+            $total += $result;
         }
-        return $data;
+        $this->recv = false;
+        return $total;
+    }
+
+    /**
+     * @param float $timeout
+     * @return mixed|void
+     */
+    public function receive(float $timeout = -1)
+    {
+        throw new \BadMethodCallException('can not call function ' . __METHOD__);
     }
 
     /**
@@ -78,7 +51,7 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
      * @return string
      * @throws Exception
      */
-    public function recvWithLength(int $length = 65535, float $timeout = -1): string
+    public function recv(int $length = 65535, float $timeout = -1): string
     {
         $data = $this->connection->recv($length, $timeout);
 
@@ -167,5 +140,21 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
     public function check(): bool
     {
         return true;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function reconnect(): void
+    {
+        $this->createConnection();
+    }
+
+    /**
+     * @return bool
+     */
+    public function close(): bool
+    {
+        return $this->connection->close();
     }
 }

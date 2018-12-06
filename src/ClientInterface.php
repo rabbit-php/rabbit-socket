@@ -15,16 +15,6 @@ namespace rabbit\socket;
 interface ClientInterface
 {
     /**
-     * @param string $data
-     */
-    public function send(string $data): bool;
-
-    /**
-     * @return string
-     */
-    public function recv(float $timeout = -1): string;
-
-    /**
      * @return bool
      */
     public function close(): bool;

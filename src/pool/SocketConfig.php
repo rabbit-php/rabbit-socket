@@ -17,13 +17,13 @@ use rabbit\pool\PoolProperties;
 class SocketConfig extends PoolProperties
 {
     /** @var int */
-    private $domain = AF_INET;
+    protected $domain = AF_INET;
     /** @var int */
-    private $type = SOCK_STREAM;
+    protected $type = SOCK_STREAM;
     /** @var int */
-    private $protocol = 0;
+    protected $protocol = 0;
     /** @var string */
-    private $bind = null;
+    protected $bind = null;
 
     /**
      * @return int

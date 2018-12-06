@@ -8,7 +8,7 @@
 
 namespace rabbit\socket\tcp;
 
-use rabbit\socket\AbstractConnection;
+use rabbit\pool\AbstractConnection;
 
 /**
  * Class AbstracetSocketConnection
@@ -16,6 +16,60 @@ use rabbit\socket\AbstractConnection;
  */
 abstract class AbstractTcpConnection extends AbstractConnection implements TcpClientInterface
 {
+    protected $connection;
+
+    /**
+     * @throws Exception
+     */
+    public function reconnect(): void
+    {
+        $this->createConnection();
+    }
+
+    /**
+     * @param float|null $timeout
+     * @return mixed|string
+     * @throws Exception
+     */
+    public function receive(float $timeout = -1)
+    {
+        $result = $this->recv($timeout);
+        $this->recv = true;
+        return $result;
+    }
+
+    /**
+     * @param string $data
+     * @return bool
+     */
+    public function send(string $data): int
+    {
+        $result = $this->connection->send($data);
+        $this->recv = false;
+        return $result;
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function recv(float $timeout = -1): string
+    {
+        $data = $this->connection->recv($timeout);
+
+        if (empty($data)) {
+            throw new Exception('ServiceConnection::recv error, errno=' . socket_strerror($this->connection->errCode));
+        }
+        return $data;
+    }
+
+    /**
+     * @return bool
+     */
+    public function close(): bool
+    {
+        return $this->connection->close();
+    }
     /**
      * @param int $length
      * @return string
@@ -24,13 +78,5 @@ abstract class AbstractTcpConnection extends AbstractConnection implements TcpCl
     {
         $result = $this->connection->peek($length);
         return $result ?? null;
-    }
-
-    /**
-     * @return \Swoole\Coroutine\Client
-     */
-    public function getConnection()
-    {
-        return $this->connection;
     }
 }
