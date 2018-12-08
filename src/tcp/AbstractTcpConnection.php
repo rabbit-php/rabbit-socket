@@ -57,10 +57,6 @@ abstract class AbstractTcpConnection extends AbstractConnection implements TcpCl
     public function recv(float $timeout = -1): string
     {
         $data = $this->connection->recv($timeout);
-
-        if (empty($data)) {
-            throw new Exception('ServiceConnection::recv error, errno=' . socket_strerror($this->connection->errCode));
-        }
         return $data;
     }
 
