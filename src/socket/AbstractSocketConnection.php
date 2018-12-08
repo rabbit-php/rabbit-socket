@@ -19,6 +19,7 @@ use rabbit\pool\AbstractConnection;
 abstract class AbstractSocketConnection extends AbstractConnection implements SocketClientInterface
 {
     protected $connection;
+
     /**
      * @param string $data
      * @param float $timeout
@@ -54,10 +55,6 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
     public function recv(int $length = 65535, float $timeout = -1): string
     {
         $data = $this->connection->recv($length, $timeout);
-
-        if (empty($data)) {
-            throw new Exception('ServiceConnection::recv error, errno=' . socket_strerror($this->connection->errCode));
-        }
         return $data;
     }
 

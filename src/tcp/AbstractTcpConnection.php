@@ -8,6 +8,7 @@
 
 namespace rabbit\socket\tcp;
 
+use rabbit\core\Exception;
 use rabbit\pool\AbstractConnection;
 
 /**
