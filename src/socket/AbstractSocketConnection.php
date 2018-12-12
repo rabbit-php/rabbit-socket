@@ -27,14 +27,13 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
      */
     public function send(string $data, float $timeout = -1): int
     {
-        $total = 0;
-        while ($data && strlen($data) > 0) {
+        $ln = strlen($data);
+        while ($data && $ln > 0) {
             $result = $this->connection->send($data, $timeout);
             $data = substr($data, $result);
-            $total += $result;
         }
         $this->recv = false;
-        return $total;
+        return $ln;
     }
 
     /**
