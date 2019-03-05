@@ -40,6 +40,16 @@ abstract class AbstractTcpConnection extends AbstractConnection implements TcpCl
     }
 
     /**
+     * @return string
+     * @throws Exception
+     */
+    public function recv(float $timeout = -1): string
+    {
+        $data = $this->connection->recv($timeout);
+        return $data;
+    }
+
+    /**
      * @param string $data
      * @return bool
      */
@@ -51,22 +61,13 @@ abstract class AbstractTcpConnection extends AbstractConnection implements TcpCl
     }
 
     /**
-     * @return string
-     * @throws Exception
-     */
-    public function recv(float $timeout = -1): string
-    {
-        $data = $this->connection->recv($timeout);
-        return $data;
-    }
-
-    /**
      * @return bool
      */
     public function close(): bool
     {
         return $this->connection->close();
     }
+
     /**
      * @param int $length
      * @return string

@@ -56,4 +56,12 @@ class SocketConfig extends PoolProperties
     {
         return $this->bind;
     }
+
+    /**
+     * @param array $uri
+     */
+    public function setUri(array $uri): void
+    {
+        $this->uri = $uri;
+    }
 }
