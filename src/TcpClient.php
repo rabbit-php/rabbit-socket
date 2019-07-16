@@ -9,6 +9,7 @@
 namespace rabbit\socket;
 
 use rabbit\core\Exception;
+use rabbit\helper\CoroHelper;
 use rabbit\socket\tcp\AbstractTcpConnection;
 use Swoole\Coroutine\Client;
 
@@ -31,10 +32,21 @@ class TcpClient extends AbstractTcpConnection
         $setting && $client->set($setting);
 
         list($host, $port) = explode(':', $address);
-        if (!$client->connect($host, $port, $timeout)) {
-            $error = sprintf('Service connect fail error=%s host=%s port=%s', socket_strerror($client->errCode), $host, $port);
-            throw new Exception($error);
+        $maxRetry = $this->pool->getPoolConfig()->getMaxReonnect();
+        while (true) {
+            if (!$client->connect($host, $port, $timeout)) {
+                $this->reconnectCount++;
+                if ($maxRetry > 0 && $this->reconnectCount >= $maxRetry) {
+                    $error = sprintf('Service connect fail error=%s host=%s port=%s', socket_strerror($client->errCode),
+                        $host, $port);
+                    throw new Exception($error);
+                }
+                CoroHelper::sleep($this->pool->getPoolConfig()->getMaxWaitTime() ?? 3);
+            } else {
+                break;
+            }
         }
+        $this->reconnectCount = 0;
         $this->connection = $client;
     }
 

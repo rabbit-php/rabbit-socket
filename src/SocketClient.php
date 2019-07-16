@@ -36,7 +36,6 @@ class SocketClient extends AbstractSocketConnection
             if (!$client->connect($host, $port, $timeout)) {
                 $this->reconnectCount++;
                 if ($maxRetry > 0 && $this->reconnectCount >= $maxRetry) {
-                    $this->reconnectCount = 0;
                     $error = sprintf('Service connect fail error=%s host=%s port=%s', socket_strerror($client->errCode), $host, $port);
                     throw new Exception($error);
                 }
@@ -45,7 +44,7 @@ class SocketClient extends AbstractSocketConnection
                 break;
             }
         }
-
+        $this->reconnectCount = 0;
         $bind = $config->getBind();
         if ($bind) {
             list($host, $port) = explode(':', $bind);
