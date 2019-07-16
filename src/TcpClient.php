@@ -23,7 +23,7 @@ class TcpClient extends AbstractTcpConnection
      */
     public function createConnection(): void
     {
-        $client = new Client(SWOOLE_SOCK_TCP | SWOOLE_KEEP);
+        $client = new Client(SWOOLE_SOCK_TCP);
 
         $address = $this->pool->getConnectionAddress();
         $timeout = $this->pool->getTimeout();
@@ -43,6 +43,6 @@ class TcpClient extends AbstractTcpConnection
      */
     public function check(): bool
     {
-        return $this->connection->isConnected();
+        return $this->connection->connected;
     }
 }

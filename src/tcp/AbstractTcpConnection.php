@@ -8,6 +8,7 @@
 
 namespace rabbit\socket\tcp;
 
+use Co\Client;
 use rabbit\core\Exception;
 use rabbit\pool\AbstractConnection;
 
@@ -17,6 +18,7 @@ use rabbit\pool\AbstractConnection;
  */
 abstract class AbstractTcpConnection extends AbstractConnection implements TcpClientInterface
 {
+    /** @var Client */
     protected $connection;
 
     /**
