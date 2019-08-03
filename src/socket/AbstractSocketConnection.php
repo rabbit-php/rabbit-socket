@@ -30,9 +30,12 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
         $ln = strlen($data);
         while ($data && $ln > 0) {
             $result = $this->connection->sendAll($data, $timeout);
-            if ($result !== false && $result > 0) {
-                $data = substr($data, $result);
+            if ($result === false) {
+                $this->release();
+                $errCode = socket_strerror($this->connection->errCode);
+                throw new Exception("fd={$this->connection->fd} send errCode=$errCode errMsg={$this->connection->errMsg}");
             }
+            $data = substr($data, $result);
         }
         $this->recv = false;
         return $ln;
@@ -137,7 +140,7 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
      */
     public function check(): bool
     {
-        return true;
+        return $this->connection->errCode === 0;
     }
 
     /**
