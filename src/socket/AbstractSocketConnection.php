@@ -31,7 +31,6 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
         while ($data && $ln > 0) {
             $result = $this->connection->sendAll($data, $timeout);
             if ($result === false) {
-                $this->release();
                 $errCode = socket_strerror($this->connection->errCode);
                 throw new Exception("fd={$this->connection->fd} send errCode=$errCode errMsg={$this->connection->errMsg}");
             }
