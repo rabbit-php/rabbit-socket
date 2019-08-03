@@ -29,8 +29,10 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
     {
         $ln = strlen($data);
         while ($data && $ln > 0) {
-            $result = $this->connection->send($data, $timeout);
-            $data = substr($data, $result);
+            $result = $this->connection->sendAll($data, $timeout);
+            if ($result !== false && $result > 0) {
+                $data = substr($data, $result);
+            }
         }
         $this->recv = false;
         return $ln;
@@ -53,7 +55,7 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
      */
     public function recv(int $length = 65535, float $timeout = -1): string
     {
-        $data = $this->connection->recv($length, $timeout);
+        $data = $this->connection->recvAll($length, $timeout);
         return $data;
     }
 
