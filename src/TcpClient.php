@@ -35,18 +35,18 @@ class TcpClient extends AbstractTcpConnection
         $maxRetry = $this->pool->getPoolConfig()->getMaxReonnect();
         while (true) {
             if (!$client->connect($host, $port, $timeout)) {
-                $this->reconnectCount++;
-                if ($maxRetry > 0 && $this->reconnectCount >= $maxRetry) {
+                $reconnectCount++;
+                if ($maxRetry > 0 && $reconnectCount >= $maxRetry) {
                     $error = sprintf('Service connect fail error=%s host=%s port=%s', socket_strerror($client->errCode),
                         $host, $port);
                     throw new Exception($error);
                 }
-                CoroHelper::sleep($this->pool->getPoolConfig()->getMaxWaitTime() ?? 3);
+                $sleep = $this->pool->getPoolConfig()->getMaxWaitTime();
+                CoroHelper::sleep($sleep ? $sleep : 1);
             } else {
                 break;
             }
         }
-        $this->reconnectCount = 0;
         $this->connection = $client;
     }
 

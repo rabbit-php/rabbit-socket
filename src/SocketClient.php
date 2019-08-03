@@ -32,19 +32,21 @@ class SocketClient extends AbstractSocketConnection
         list($host, $port) = explode(':', $address);
 
         $maxRetry = $this->pool->getPoolConfig()->getMaxReonnect();
+        $reconnectCount = 0;
         while (true) {
             if (!$client->connect($host, $port, $timeout)) {
-                $this->reconnectCount++;
-                if ($maxRetry > 0 && $this->reconnectCount >= $maxRetry) {
-                    $error = sprintf('Service connect fail error=%s host=%s port=%s', socket_strerror($client->errCode), $host, $port);
+                $reconnectCount++;
+                if ($maxRetry > 0 && $reconnectCount >= $maxRetry) {
+                    $error = sprintf('Service connect fail error=%s host=%s port=%s', socket_strerror($client->errCode),
+                        $host, $port);
                     throw new Exception($error);
                 }
-                CoroHelper::sleep($this->pool->getPoolConfig()->getMaxWaitTime() ?? 3);
+                $sleep = $this->pool->getPoolConfig()->getMaxWaitTime();
+                CoroHelper::sleep($sleep ? $sleep : 1);
             } else {
                 break;
             }
         }
-        $this->reconnectCount = 0;
         $bind = $config->getBind();
         if ($bind) {
             list($host, $port) = explode(':', $bind);
