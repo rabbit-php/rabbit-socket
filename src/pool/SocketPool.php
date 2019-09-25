@@ -19,7 +19,7 @@ use rabbit\socket\TcpClient;
  */
 class SocketPool extends ConnectionPool
 {
-    private $client = TcpClient::class;
+    protected $client = TcpClient::class;
 
     /**
      * @return int
