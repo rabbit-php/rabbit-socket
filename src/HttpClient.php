@@ -7,6 +7,7 @@ namespace rabbit\socket;
 use Co\Http\Client;
 use rabbit\exception\NotSupportedException;
 use rabbit\pool\AbstractConnection;
+use rabbit\socket\http\Response;
 
 /**
  * Class SwooleTransport
@@ -117,7 +118,7 @@ class HttpClient extends AbstractConnection
      */
     public function setDefer($defer = true): bool
     {
-        $this->client->setDefer($defer);
+        return $this->client->setDefer($defer);
     }
 
     /**
@@ -129,9 +130,14 @@ class HttpClient extends AbstractConnection
     public function __call($name, $arguments)
     {
         if (method_exists($this->client, $name)) {
-            if (in_array(strtolower($name), self::SUPPORT) && $this->client->getDefer()) {
+            if (in_array(strtolower($name), self::SUPPORT)) {
+                $this->client->setDefer();
                 $this->client->$name(...$arguments);
-                return $this->client->recv();
+                $data = (string)$this->client->recv();
+                $response = new Response($this->client->getHeaders(), $this->client->getCookies(),
+                    $this->client->getStatusCode(), $data);
+//                $this->release();
+                return $response;
             }
             return $this->client->$name(...$arguments);
         }
