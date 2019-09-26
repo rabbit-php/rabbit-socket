@@ -10,6 +10,7 @@ namespace rabbit\socket;
 
 use rabbit\core\Exception;
 use rabbit\helper\CoroHelper;
+use rabbit\pool\PoolManager;
 use rabbit\socket\tcp\AbstractTcpConnection;
 use Swoole\Coroutine\Client;
 
@@ -24,15 +25,16 @@ class TcpClient extends AbstractTcpConnection
      */
     public function createConnection(): void
     {
+        $pool = PoolManager::getPool($this->poolKey);
         $client = new Client(SWOOLE_SOCK_TCP);
 
-        $address = $this->pool->getConnectionAddress();
-        $timeout = $this->pool->getTimeout();
-        $setting = $this->pool->getPoolConfig()->getSetting();
+        $address = $pool->getConnectionAddress();
+        $timeout = $pool->getTimeout();
+        $setting = $pool->getPoolConfig()->getSetting();
         $setting && $client->set($setting);
 
         list($host, $port) = explode(':', $address);
-        $maxRetry = $this->pool->getPoolConfig()->getMaxReonnect();
+        $maxRetry = $pool->getPoolConfig()->getMaxReonnect();
         while (true) {
             if (!$client->connect($host, $port, $timeout)) {
                 $reconnectCount++;
@@ -41,7 +43,7 @@ class TcpClient extends AbstractTcpConnection
                         $host, $port);
                     throw new Exception($error);
                 }
-                $sleep = $this->pool->getPoolConfig()->getMaxWaitTime();
+                $sleep = $pool->getPoolConfig()->getMaxWaitTime();
                 CoroHelper::sleep($sleep ? $sleep : 1);
             } else {
                 break;

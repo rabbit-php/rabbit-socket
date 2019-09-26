@@ -43,6 +43,6 @@ class SocketPool extends ConnectionPool
     public function createConnection(): ConnectionInterface
     {
         $client = $this->client;
-        return new $client($this);
+        return new $client($this->getPoolConfig()->getName());
     }
 }

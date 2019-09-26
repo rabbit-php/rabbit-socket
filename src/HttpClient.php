@@ -7,6 +7,7 @@ namespace rabbit\socket;
 use Co\Http\Client;
 use rabbit\exception\NotSupportedException;
 use rabbit\pool\AbstractConnection;
+use rabbit\pool\PoolManager;
 use rabbit\socket\http\Response;
 
 /**
@@ -60,7 +61,8 @@ class HttpClient extends AbstractConnection
 
     public function createConnection(): void
     {
-        $dsn = $this->pool->getConnectionAddress();
+        $pool = PoolManager::getPool($this->poolKey);
+        $dsn = $pool->getConnectionAddress();
         $parsed = parse_url($dsn);
         if (!isset($parsed['path'])) {
             $parsed['path'] = '/';
@@ -74,7 +76,7 @@ class HttpClient extends AbstractConnection
             isset($parsed['port']) ? $parsed['port'] : ($scheme === 'http' ? 80 : 443),
             $scheme === 'http' ? false : true);
         $client->set([
-            'timeout' => $this->pool->getTimeout(),
+            'timeout' => $pool->getTimeout(),
         ]);
         $client->setHeaders([
             'Content-Type' => 'application/x-www-form-urlencoded'
@@ -136,7 +138,7 @@ class HttpClient extends AbstractConnection
                 $data = (string)$this->client->recv();
                 $response = new Response($this->client->getHeaders(), $this->client->getCookies(),
                     $this->client->getStatusCode(), $data);
-//                $this->release();
+                $this->release();
                 return $response;
             }
             return $this->client->$name(...$arguments);
