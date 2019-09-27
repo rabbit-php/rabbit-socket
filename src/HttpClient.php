@@ -135,9 +135,12 @@ class HttpClient extends AbstractConnection
             if (in_array(strtolower($name), self::SUPPORT)) {
                 $this->client->setDefer();
                 $this->client->$name(...$arguments);
-                $data = (string)$this->client->recv();
+                $this->client->recv();
+                if ($this->client->errCode !== 0) {
+                    throw new \RuntimeException("Http $name error! msg=" . socket_strerror($this->client->errCode));
+                }
                 $response = new Response($this->client->getHeaders(), $this->client->getCookies(),
-                    $this->client->getStatusCode(), $data);
+                    $this->client->getStatusCode(), $this->client->body);
                 $this->release();
                 return $response;
             }
