@@ -10,6 +10,7 @@ namespace rabbit\socket\socket;
 
 use rabbit\core\Exception;
 use rabbit\pool\AbstractConnection;
+use rabbit\pool\PoolManager;
 
 
 /**
@@ -31,7 +32,9 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
         while ($data && $ln > 0) {
             $result = $this->connection->sendAll($data, $timeout);
             if ($result === false) {
+                echo "{$this->connection->fd} send failed!error={$this->connection->error}" . PHP_EOL;
                 $this->reconnect();
+                $this->send($data, $timeout);
             }
             $data = substr($data, $result);
         }
@@ -45,7 +48,7 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
      */
     public function receive(float $timeout = -1)
     {
-        throw new \BadMethodCallException('can not call function ' . __METHOD__);
+        return $this->recv(65535, $timeout);
     }
 
     /**
@@ -56,7 +59,14 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
      */
     public function recv(int $length = 65535, float $timeout = -1): string
     {
-        $data = $this->connection->recvAll($length, $timeout);
+        $retry = 0;
+        while (false === $data = $this->connection->recvAll($length, $timeout)) {
+            $retry++;
+            if ($retry >= PoolManager::getPool($this->poolKey)->getPoolConfig()->getMaxReonnect()) {
+                throw new \RuntimeException("{$this->connection->fd} recv failed!error=" . socket_strerror($this->connection->errCode));
+            }
+        }
+        $this->recv = true;
         return $data;
     }
 
