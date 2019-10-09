@@ -32,9 +32,7 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
         while ($data && $ln > 0) {
             $result = $this->connection->sendAll($data, $timeout);
             if ($result === false) {
-                echo "{$this->connection->fd} send failed!error={$this->connection->error}" . PHP_EOL;
-                $this->reconnect();
-                $this->send($data, $timeout);
+                throw new \RuntimeException("{$this->connection->fd} send failed!error=" . socket_strerror($this->connection->errCode));
             }
             $data = substr($data, $result);
         }
