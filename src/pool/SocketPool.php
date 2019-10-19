@@ -8,7 +8,6 @@
 
 namespace rabbit\socket\pool;
 
-
 use rabbit\pool\ConnectionInterface;
 use rabbit\pool\ConnectionPool;
 use rabbit\socket\TcpClient;

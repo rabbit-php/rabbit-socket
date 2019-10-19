@@ -3,7 +3,6 @@
 
 namespace rabbit\socket\http;
 
-
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -321,5 +320,4 @@ class Response implements ResponseInterface
         $this->stream = $body;
         return $this;
     }
-
 }

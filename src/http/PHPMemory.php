@@ -7,9 +7,8 @@ use InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 
-Class PHPMemory implements StreamInterface
+class PHPMemory implements StreamInterface
 {
-
     private $stream;
     private $seekable;
     private $readable;
@@ -281,5 +280,4 @@ Class PHPMemory implements StreamInterface
             $this->truncate(strlen($data));
         }
     }
-
 }

@@ -12,7 +12,6 @@ use rabbit\core\Exception;
 use rabbit\pool\AbstractConnection;
 use rabbit\pool\PoolManager;
 
-
 /**
  * Class AbstracetSocketConnection
  * @package rabbit\socket\socket

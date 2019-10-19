@@ -3,7 +3,6 @@
 
 namespace rabbit\socket;
 
-
 use Co\Http\Client;
 use rabbit\exception\NotSupportedException;
 use rabbit\pool\AbstractConnection;
@@ -72,9 +71,11 @@ class HttpClient extends AbstractConnection
             $this->database = $this->query['database'];
         }
         $scheme = (isset($parsed['scheme']) ? $parsed['scheme'] : 'http');
-        $client = new Client($parsed['host'],
+        $client = new Client(
+            $parsed['host'],
             isset($parsed['port']) ? $parsed['port'] : ($scheme === 'http' ? 80 : 443),
-            $scheme === 'http' ? false : true);
+            $scheme === 'http' ? false : true
+        );
         $client->set([
             'timeout' => $pool->getTimeout(),
         ]);
@@ -139,8 +140,12 @@ class HttpClient extends AbstractConnection
                 if ($this->client->errCode !== 0) {
                     throw new \RuntimeException("Http $name error! msg=" . socket_strerror($this->client->errCode));
                 }
-                $response = new Response($this->client->getHeaders(), $this->client->getCookies(),
-                    $this->client->getStatusCode(), $this->client->body);
+                $response = new Response(
+                    $this->client->getHeaders(),
+                    $this->client->getCookies(),
+                    $this->client->getStatusCode(),
+                    $this->client->body
+                );
                 $this->release();
                 return $response;
             }

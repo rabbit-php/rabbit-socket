@@ -8,7 +8,6 @@
 
 namespace rabbit\socket\pool;
 
-
 use rabbit\pool\PoolProperties;
 
 /**

@@ -8,8 +8,8 @@
 
 namespace rabbit\socket;
 
+use Co\System;
 use rabbit\core\Exception;
-use rabbit\helper\CoroHelper;
 use rabbit\pool\PoolManager;
 use rabbit\socket\tcp\AbstractTcpConnection;
 use Swoole\Coroutine\Client;
@@ -40,12 +40,16 @@ class TcpClient extends AbstractTcpConnection
             if (!$client->connect($host, $port, $timeout)) {
                 $reconnectCount++;
                 if ($maxRetry > 0 && $reconnectCount >= $maxRetry) {
-                    $error = sprintf('Service connect fail error=%s host=%s port=%s', socket_strerror($client->errCode),
-                        $host, $port);
+                    $error = sprintf(
+                        'Service connect fail error=%s host=%s port=%s',
+                        socket_strerror($client->errCode),
+                        $host,
+                        $port
+                    );
                     throw new Exception($error);
                 }
                 $sleep = $pool->getPoolConfig()->getMaxWaitTime();
-                CoroHelper::sleep($sleep ? $sleep : 1);
+                System::sleep($sleep ? $sleep : 1);
             } else {
                 break;
             }
