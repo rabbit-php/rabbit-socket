@@ -57,7 +57,7 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
     public function recv(int $length = 65535, float $timeout = -1): string
     {
         $retry = 0;
-        while (false === $data = $this->connection->recvAll($length, $timeout)) {
+        while (false === $data = $this->connection->recv($length, $timeout)) {
             $retry++;
             if ($retry >= PoolManager::getPool($this->poolKey)->getPoolConfig()->getMaxReonnect()) {
                 throw new \RuntimeException("{$this->connection->fd} recv failed!error=" . socket_strerror($this->connection->errCode));
