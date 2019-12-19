@@ -5,6 +5,7 @@ namespace rabbit\socket;
 
 use Co\Http\Client;
 use rabbit\exception\NotSupportedException;
+use rabbit\helper\ArrayHelper;
 use rabbit\pool\AbstractConnection;
 use rabbit\pool\PoolManager;
 use rabbit\socket\http\Response;
@@ -67,8 +68,9 @@ class HttpClient extends AbstractConnection
             $parsed['path'] = '/';
         }
         isset($parsed['query']) ? parse_str($parsed['query'], $this->query) : $this->query = [];
-        if (isset($this->query['database'])) {
-            $this->database = $this->query['database'];
+        if (isset($this->query['dbname'])) {
+            $this->database = ArrayHelper::remove($this->query, 'dbname', 'default');
+            $this->query['database'] = $this->database;
         }
         $scheme = (isset($parsed['scheme']) ? $parsed['scheme'] : 'http');
         $client = new Client(
