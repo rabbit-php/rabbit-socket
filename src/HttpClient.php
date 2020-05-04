@@ -72,7 +72,7 @@ class HttpClient extends AbstractConnection
             $this->database = ArrayHelper::remove($this->query, 'dbname', 'default');
             $this->query['database'] = $this->database;
         }
-        $scheme = (isset($parsed['scheme']) ? $parsed['scheme'] : 'http');
+        $scheme = (isset($parsed['scheme']) && $parsed['scheme'] === 'https' ? $parsed['scheme'] : 'http');
         $client = new Client(
             $parsed['host'],
             isset($parsed['port']) ? $parsed['port'] : ($scheme === 'http' ? 80 : 443),
