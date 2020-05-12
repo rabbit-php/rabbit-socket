@@ -58,14 +58,6 @@ class SocketConfig extends PoolProperties
     }
 
     /**
-     * @param array $uri
-     */
-    public function setUri(array $uri): void
-    {
-        $this->uri = $uri;
-    }
-
-    /**
      * @param string $name
      */
     public function setName(string $name): void
