@@ -21,14 +21,6 @@ class SocketPool extends ConnectionPool
     protected $client = TcpClient::class;
 
     /**
-     * @param int $count
-     */
-    public function setCurrentCount(int $count = 0): void
-    {
-        $this->currentCount = $count;
-    }
-
-    /**
      * @return ConnectionInterface
      */
     public function createConnection(): ConnectionInterface
