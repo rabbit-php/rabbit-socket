@@ -47,7 +47,7 @@ class SocketClient extends AbstractSocketConnection
                     );
                     throw new Exception($error);
                 }
-                $sleep = $pool->getPoolConfig()->getMaxWaitTime();
+                $sleep = $pool->getPoolConfig()->getMaxWait();
                 System::sleep($sleep ? $sleep : 1);
             } else {
                 break;
