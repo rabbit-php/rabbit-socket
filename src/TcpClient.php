@@ -56,12 +56,4 @@ class TcpClient extends AbstractTcpConnection
         }
         $this->connection = $client;
     }
-
-    /**
-     * @return bool
-     */
-    public function check(): bool
-    {
-        return $this->connection->connected;
-    }
 }

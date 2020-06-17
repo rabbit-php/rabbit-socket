@@ -40,15 +40,6 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
     }
 
     /**
-     * @param float $timeout
-     * @return mixed|void
-     */
-    public function receive(float $timeout = -1)
-    {
-        return $this->recv(65535, $timeout);
-    }
-
-    /**
      * @param int $length
      * @param float $timeout
      * @return string
@@ -138,14 +129,6 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
     public function getpeername(): array
     {
         return $this->connection->getpeername();
-    }
-
-    /**
-     * @return bool
-     */
-    public function check(): bool
-    {
-        return $this->connection->errCode === 0;
     }
 
     /**

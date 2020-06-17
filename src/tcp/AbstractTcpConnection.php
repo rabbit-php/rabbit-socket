@@ -30,18 +30,6 @@ abstract class AbstractTcpConnection extends AbstractConnection implements TcpCl
     }
 
     /**
-     * @param float|null $timeout
-     * @return mixed|string
-     * @throws Exception
-     */
-    public function receive(float $timeout = -1)
-    {
-        $result = $this->recv($timeout);
-        $this->recv = true;
-        return $result;
-    }
-
-    /**
      * @return string
      * @throws Exception
      */
