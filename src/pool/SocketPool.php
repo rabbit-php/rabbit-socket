@@ -21,9 +21,9 @@ class SocketPool extends ConnectionPool
     protected $client = TcpClient::class;
 
     /**
-     * @return ConnectionInterface
+     * @return mixed
      */
-    public function createConnection(): ConnectionInterface
+    public function create()
     {
         $client = $this->client;
         return new $client($this->getPoolConfig()->getName());

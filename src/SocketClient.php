@@ -33,7 +33,7 @@ class SocketClient extends AbstractSocketConnection
 
         list($host, $port) = explode(':', $address);
 
-        $maxRetry = $pool->getPoolConfig()->getMaxReonnect();
+        $maxRetry = $pool->getPoolConfig()->getMaxRetry();
         $reconnectCount = 0;
         while (true) {
             if (!$client->connect($host, $port, $timeout)) {

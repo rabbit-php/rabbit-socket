@@ -30,11 +30,11 @@ class TcpClient extends AbstractTcpConnection
 
         $address = $pool->getConnectionAddress();
         $timeout = $pool->getTimeout();
-        $setting = $pool->getPoolConfig()->getSetting();
+        $setting = $pool->getPoolConfig()->getConfig();
         $setting && $client->set($setting);
 
         list($host, $port) = explode(':', $address);
-        $maxRetry = $pool->getPoolConfig()->getMaxReonnect();
+        $maxRetry = $pool->getPoolConfig()->getMaxRetry();
         $reconnectCount = 0;
         while (true) {
             if (!$client->connect($host, $port, $timeout)) {
