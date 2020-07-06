@@ -1,22 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/22
- * Time: 18:13
- */
+declare(strict_types=1);
 
-namespace rabbit\socket;
+namespace Rabbit\Socket;
 
+use Co\Client;
 use Co\System;
-use rabbit\core\Exception;
-use rabbit\pool\PoolManager;
-use rabbit\socket\tcp\AbstractTcpConnection;
-use Swoole\Coroutine\Client;
+use Rabbit\Base\Core\Exception;
+use Rabbit\Pool\PoolManager;
+use Rabbit\Socket\Tcp\AbstractTcpConnection;
 
 /**
  * Class TcpClient
- * @package rabbit\socket
+ * @package Rabbit\Socket
  */
 class TcpClient extends AbstractTcpConnection
 {

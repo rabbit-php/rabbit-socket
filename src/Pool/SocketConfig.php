@@ -1,29 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/11/20
- * Time: 13:40
- */
+declare(strict_types=1);
 
-namespace rabbit\socket\pool;
+namespace Rabbit\Socket\Pool;
 
 use rabbit\pool\PoolProperties;
 
 /**
  * Class SocketConfig
- * @package rabbit\socket\pool
+ * @package Rabbit\Socket\Pool
  */
 class SocketConfig extends PoolProperties
 {
     /** @var int */
-    protected $domain = AF_INET;
+    protected int $domain = AF_INET;
     /** @var int */
-    protected $type = SOCK_STREAM;
+    protected int $type = SOCK_STREAM;
     /** @var int */
-    protected $protocol = 0;
+    protected int $protocol = 0;
     /** @var string */
-    protected $bind = null;
+    protected ?string $bind = null;
 
     /**
      * @return int

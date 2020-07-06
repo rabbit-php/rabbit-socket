@@ -1,16 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/11/20
- * Time: 12:04
- */
+declare(strict_types=1);
 
-namespace rabbit\socket;
+namespace Rabbit\Socket;
 
 /**
  * Interface ClientInterface
- * @package rabbit\socket
+ * @package Rabbit\Socket
  */
 interface ClientInterface
 {

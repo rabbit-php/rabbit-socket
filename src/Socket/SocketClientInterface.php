@@ -1,22 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/21
- * Time: 0:58
- */
+declare(strict_types=1);
 
-namespace rabbit\socket\socket;
+namespace Rabbit\Socket\Socket;
 
 use rabbit\socket\ClientInterface;
+use Swoole\Coroutine\Socket;
 
 /**
  * Interface SocketClientInterface
- * @package rabbit\socket
+ * @package Rabbit\Socket\Socket
  */
 interface SocketClientInterface extends ClientInterface
 {
     /**
+     * @param string $data
      * @param float $timeout
      * @return int
      */
@@ -43,10 +40,10 @@ interface SocketClientInterface extends ClientInterface
     public function listen(int $backlog = 0): bool;
 
     /**
-     * @param float $timeout
-     * @return null|Coroutine\Socket
+     * @param float|int $timeout
+     * @return Socket|null
      */
-    public function accept(float $timeout = -1): ?\Swoole\Coroutine\Socket;
+    public function accept(float $timeout = -1): ?Socket;
 
     /**
      * @param string $address

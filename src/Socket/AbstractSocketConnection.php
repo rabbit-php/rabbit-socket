@@ -1,24 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/11/20
- * Time: 11:51
- */
+declare(strict_types=1);
 
-namespace rabbit\socket\socket;
+namespace Rabbit\Socket\Socket;
 
-use rabbit\core\Exception;
-use rabbit\pool\AbstractConnection;
-use rabbit\pool\PoolManager;
+use Rabbit\Pool\AbstractConnection;
+use Rabbit\Pool\PoolManager;
+use Swoole\Coroutine\Socket;
 
 /**
- * Class AbstracetSocketConnection
- * @package rabbit\socket\socket
+ * Class AbstractSocketConnection
+ * @package Rabbit\Socket\Socket
  */
 abstract class AbstractSocketConnection extends AbstractConnection implements SocketClientInterface
 {
-    protected $connection;
+    /** @var Socket  */
+    protected Socket $connection;
 
     /**
      * @param string $data
@@ -35,7 +31,6 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
             }
             $data = substr($data, $result);
         }
-        $this->recv = false;
         return $ln;
     }
 
@@ -43,7 +38,6 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
      * @param int $length
      * @param float $timeout
      * @return string
-     * @throws Exception
      */
     public function recv(int $length = 65535, float $timeout = -1): string
     {
@@ -54,7 +48,6 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
                 throw new \RuntimeException("{$this->connection->fd} recv failed!error=" . socket_strerror($this->connection->errCode));
             }
         }
-        $this->recv = true;
         return $data;
     }
 
@@ -78,12 +71,15 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
     }
 
     /**
-     * @param float $timeout
-     * @return null|Coroutine\Socket
+     * @param float|int $timeout
+     * @return Socket|null
      */
-    public function accept(float $timeout = -1): ?\Swoole\Coroutine\Socket
+    public function accept(float $timeout = -1): ?Socket
     {
-        $this->connection->accept($timeout);
+        if (false === $socket = $this->connection->accept($timeout)) {
+            return null;
+        }
+        return $socket;
     }
 
     /**
@@ -131,9 +127,6 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
         return $this->connection->getpeername();
     }
 
-    /**
-     * @throws Exception
-     */
     public function reconnect(): void
     {
         $this->createConnection();

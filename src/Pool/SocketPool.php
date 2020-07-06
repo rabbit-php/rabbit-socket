@@ -1,14 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/11/14
- * Time: 11:19
- */
+declare(strict_types=1);
 
-namespace rabbit\socket\pool;
+namespace Rabbit\Socket\pool;
 
-use rabbit\pool\ConnectionInterface;
 use rabbit\pool\ConnectionPool;
 use rabbit\socket\TcpClient;
 
@@ -18,7 +12,7 @@ use rabbit\socket\TcpClient;
  */
 class SocketPool extends ConnectionPool
 {
-    protected $client = TcpClient::class;
+    protected string $client = TcpClient::class;
 
     /**
      * @return mixed

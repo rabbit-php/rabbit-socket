@@ -6,7 +6,7 @@
  * Time: 10:11
  */
 
-namespace rabbit\socket\tcp;
+namespace Rabbit\Socket\tcp;
 
 /**
  * Interface TcpParserInterface

@@ -1,52 +1,46 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/21
- * Time: 1:03
- */
+declare(strict_types=1);
 
-namespace rabbit\socket\tcp;
+namespace Rabbit\Socket\Tcp;
 
 use Co\Client;
-use rabbit\core\Exception;
-use rabbit\pool\AbstractConnection;
+use Rabbit\Pool\AbstractConnection;
 
 /**
- * Class AbstracetSocketConnection
- * @package rabbit\socket
+ * Class AbstractTcpConnection
+ * @package Rabbit\Socket\Tcp
  */
 abstract class AbstractTcpConnection extends AbstractConnection implements TcpClientInterface
 {
     /** @var Client */
-    protected $connection;
+    protected Client $connection;
 
-    /**
-     * @throws Exception
-     */
     public function reconnect(): void
     {
         $this->createConnection();
     }
 
     /**
+     * @param float $timeout
      * @return string
-     * @throws Exception
      */
     public function recv(float $timeout = -1): string
     {
-        $data = $this->connection->recv($timeout);
+        if (false === $data = $this->connection->recv($timeout)) {
+            return '';
+        }
         return $data;
     }
 
     /**
      * @param string $data
-     * @return bool
+     * @return int
      */
     public function send(string $data): int
     {
-        $result = $this->connection->send($data);
-        $this->recv = false;
+        if (false === $result = $this->connection->send($data)) {
+            return 0;
+        }
         return $result;
     }
 

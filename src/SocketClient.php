@@ -1,26 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/11/20
- * Time: 11:49
- */
+declare(strict_types=1);
 
-namespace rabbit\socket;
+namespace Rabbit\Socket;
 
+use Co\Socket;
 use Co\System;
-use rabbit\core\Exception;
-use rabbit\pool\PoolManager;
-use rabbit\socket\pool\SocketConfig;
-use rabbit\socket\socket\AbstractSocketConnection;
-use Swoole\Coroutine\Socket;
+use Rabbit\Base\Core\Exception;
+use Rabbit\Pool\PoolManager;
+use Rabbit\Socket\Pool\SocketConfig;
+use Rabbit\Socket\Socket\AbstractSocketConnection;
 
 /**
  * Class SocketClient
- * @package rabbit\socket
+ * @package Rabbit\Socket
  */
 class SocketClient extends AbstractSocketConnection
 {
+    /**
+     * @throws Exception
+     */
     public function createConnection(): void
     {
         $pool = PoolManager::getPool($this->poolKey);

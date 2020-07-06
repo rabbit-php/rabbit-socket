@@ -1,27 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/21
- * Time: 0:58
- */
+declare(strict_types=1);
 
-namespace rabbit\socket\tcp;
+namespace Rabbit\Socket\Tcp;
 
-use rabbit\socket\ClientInterface;
+use Rabbit\Socket\ClientInterface;
 
 /**
- * Interface SocketClientInterface
- * @package rabbit\socket
+ * Interface TcpClientInterface
+ * @package Rabbit\Socket\Tcp
  */
 interface TcpClientInterface extends ClientInterface
 {
     /**
      * @param string $data
+     * @return int
      */
     public function send(string $data): int;
 
     /**
+     * @param float $timeout
      * @return string
      */
     public function recv(float $timeout = -1): string;
