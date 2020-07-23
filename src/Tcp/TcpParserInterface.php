@@ -1,12 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/23
- * Time: 10:11
- */
+declare(strict_types=1);
 
-namespace Rabbit\Socket\tcp;
+namespace Rabbit\Socket\Tcp;
 
 /**
  * Interface TcpParserInterface

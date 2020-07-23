@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Rabbit\Socket\pool;
+namespace Rabbit\Socket\Pool;
 
-use rabbit\pool\ConnectionPool;
-use rabbit\socket\TcpClient;
+use Rabbit\Pool\ConnectionPool;
+use Rabbit\Socket\TcpClient;
 
 /**
  * Class SocketPool
- * @package rabbit\socket\pool
+ * @package Rabbit\Socket\Pool
  */
 class SocketPool extends ConnectionPool
 {

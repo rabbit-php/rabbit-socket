@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Rabbit\Socket\Socket;
 
-use rabbit\socket\ClientInterface;
+use Rabbit\Socket\ClientInterface;
 use Swoole\Coroutine\Socket;
 
 /**

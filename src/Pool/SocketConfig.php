@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Rabbit\Socket\Pool;
 
-use rabbit\pool\PoolProperties;
+use Rabbit\Pool\PoolProperties;
 
 /**
  * Class SocketConfig
