@@ -1,12 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rabbit\Socket;
 
 use Co\Socket;
-use Co\System;
-use Rabbit\Base\Core\Exception;
 use Rabbit\Pool\PoolManager;
+use Rabbit\Base\Core\Exception;
 use Rabbit\Socket\Pool\SocketConfig;
 use Rabbit\Socket\Socket\AbstractSocketConnection;
 
@@ -46,7 +46,7 @@ class SocketClient extends AbstractSocketConnection
                     throw new Exception($error);
                 }
                 $sleep = $pool->getPoolConfig()->getMaxWait();
-                System::sleep($sleep ? $sleep : 1);
+                usleep(($sleep ? $sleep : 1) * 1000);
             } else {
                 break;
             }
