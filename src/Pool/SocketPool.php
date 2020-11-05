@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rabbit\Socket\Pool;
 
 use Rabbit\Pool\ConnectionPool;
-use Rabbit\Socket\TcpClient;
+use Rabbit\Socket\SocketClient;
 
 /**
  * Class SocketPool
@@ -12,7 +13,7 @@ use Rabbit\Socket\TcpClient;
  */
 class SocketPool extends ConnectionPool
 {
-    protected string $client = TcpClient::class;
+    protected string $client = SocketClient::class;
 
     /**
      * @return mixed

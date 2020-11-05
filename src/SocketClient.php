@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Rabbit\Socket;
 
-use Co\Socket;
 use Rabbit\Pool\PoolManager;
 use Rabbit\Base\Core\Exception;
-use Rabbit\Socket\Pool\SocketConfig;
 use Rabbit\Socket\Socket\AbstractSocketConnection;
 
 /**
@@ -22,41 +20,37 @@ class SocketClient extends AbstractSocketConnection
     public function createConnection(): void
     {
         $pool = PoolManager::getPool($this->poolKey);
-        /** @var SocketConfig $config */
-        $config = $pool->getPoolConfig();
-        $client = new Socket($config->getDomin(), $config->getType(), $config->getProtocol());
-
         $address = $pool->getConnectionAddress();
         $timeout = $pool->getTimeout();
 
         list($host, $port) = explode(':', $address);
-
         $maxRetry = $pool->getPoolConfig()->getMaxRetry();
         $reconnectCount = 0;
         while (true) {
-            if (!$client->connect($host, $port, $timeout)) {
+            if (false === $client = @stream_socket_client(
+                "tcp://$host:$port",
+                $errorNumber,
+                $errorDescription,
+                $timeout ?? ini_get('default_socket_timeout')
+            )) {
                 $reconnectCount++;
                 if ($maxRetry > 0 && $reconnectCount >= $maxRetry) {
                     $error = sprintf(
                         'Service connect fail error=%s host=%s port=%s',
-                        socket_strerror($client->errCode),
+                        $errorDescription,
                         $host,
                         $port
                     );
                     throw new Exception($error);
                 }
                 $sleep = $pool->getPoolConfig()->getMaxWait();
-                usleep(($sleep ? $sleep : 1) * 1000);
+                sleep($sleep);
             } else {
                 break;
             }
         }
-        $bind = $config->getBind();
-        if ($bind) {
-            list($host, $port) = explode(':', $bind);
-            $client->bind($host, $port);
-        }
-
+        $timeout && stream_set_timeout($client, $timeout);
+        stream_context_set_option($client, 'socket', 'tcp_nodelay', true);
         $this->connection = $client;
     }
 }
