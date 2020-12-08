@@ -49,7 +49,7 @@ class SocketClient extends AbstractSocketConnection
                 break;
             }
         }
-        $timeout && stream_set_timeout($client, $timeout);
+        $timeout && stream_set_timeout($client, $t = (int)$timeout, (int)(($timeout - $t) * 1000000));
         stream_context_set_option($client, 'socket', 'tcp_nodelay', true);
         $this->connection = $client;
     }
