@@ -18,12 +18,4 @@ class SocketConfig extends PoolProperties
     {
         return $this->protocol;
     }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
 }
