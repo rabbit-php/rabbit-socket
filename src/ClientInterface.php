@@ -9,8 +9,5 @@ namespace Rabbit\Socket;
  */
 interface ClientInterface
 {
-    /**
-     * @return bool
-     */
     public function close(): bool;
 }

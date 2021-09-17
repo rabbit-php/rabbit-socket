@@ -14,9 +14,6 @@ use Rabbit\Socket\Socket\AbstractSocketConnection;
  */
 class SocketClient extends AbstractSocketConnection
 {
-    /**
-     * @throws Exception
-     */
     public function createConnection(): void
     {
         $pool = PoolManager::getPool($this->poolKey);

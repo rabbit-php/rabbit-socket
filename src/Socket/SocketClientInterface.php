@@ -12,17 +12,7 @@ use Rabbit\Socket\ClientInterface;
  */
 interface SocketClientInterface extends ClientInterface
 {
-    /**
-     * @param string $data
-     * @param float $timeout
-     * @return int
-     */
     public function send(string $data, float $timeout = -1): int;
 
-    /**
-     * @param int $length
-     * @param float $timeout
-     * @return string
-     */
     public function recv(int $length = 65535, float $timeout = -1): string;
 }

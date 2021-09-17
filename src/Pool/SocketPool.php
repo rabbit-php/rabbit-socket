@@ -18,7 +18,7 @@ class SocketPool extends ConnectionPool
     /**
      * @return mixed
      */
-    public function create()
+    public function create(): object
     {
         $client = $this->client;
         return new $client($this->getPoolConfig()->getName());

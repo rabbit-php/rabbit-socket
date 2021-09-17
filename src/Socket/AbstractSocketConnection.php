@@ -12,13 +12,8 @@ use Rabbit\Pool\AbstractConnection;
  */
 abstract class AbstractSocketConnection extends AbstractConnection implements SocketClientInterface
 {
-    protected $connection;
+    protected object $connection;
 
-    /**
-     * @param string $data
-     * @param float $timeout
-     * @return int
-     */
     public function send(string $data, float $timeout = -1): int
     {
         $ln = strlen($data);
@@ -33,11 +28,6 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
         return $ln;
     }
 
-    /**
-     * @param int $length
-     * @param float $timeout
-     * @return string
-     */
     public function recv(int $length = 65535, float $timeout = -1): string
     {
         $this->setTimeout($timeout);
@@ -56,9 +46,6 @@ abstract class AbstractSocketConnection extends AbstractConnection implements So
         $this->createConnection();
     }
 
-    /**
-     * @return bool
-     */
     public function close(): bool
     {
         return $this->connection && fclose($this->connection);
